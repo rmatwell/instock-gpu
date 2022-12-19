@@ -33,6 +33,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build -x test
     - name: Change directory
-      run: cd ./home/runner/work/instock-gpu/instock-gpu
+      run: cd /home/runner/work
     - name: Check directories and permissions  
       run: ls -l
