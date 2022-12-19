@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy WAR app to Azure Web App - instock-gpu
+name: Build and deploy JAR app to Azure Web App - instock-gpu
 
 on:
   push:
@@ -20,15 +20,18 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '8'
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,4 +53,4 @@ jobs:
           app-name: 'instock-gpu'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FC5C28A33AFC4D20A16A09D1B00D73F8 }}
-          package: '*.war'
+          package: '*.jar'
