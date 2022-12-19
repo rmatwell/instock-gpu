@@ -33,6 +33,6 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build -x test
     - name: Change directory
-      run: cd /home/runner/work
+      run: cd /home/runner/work/build
     - name: Check directories and permissions  
       run: ls -l
