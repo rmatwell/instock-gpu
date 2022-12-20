@@ -1,5 +1,6 @@
 package org.rmatwell.webscraper.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 /**
@@ -11,4 +12,7 @@ public class DateUtils {
         LocalDate localDate = LocalDate.now();
         return localDate.toString();
     }
+
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
 }

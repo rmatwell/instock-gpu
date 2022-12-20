@@ -11,7 +11,7 @@ import java.util.List;
  * @author Richard Atwell
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/listings")
 public class ListingController {
     @Autowired
     private final ListingService service;
@@ -20,19 +20,19 @@ public class ListingController {
         this.service = service;
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000"}) //local dev
-    @GetMapping("/getListings")
+    @CrossOrigin(origins = {"http://localhost:3000"})
+    @GetMapping("/get-listings")
     public List<Listing> getListings(){   return service.getListings();    }
 
-    @PostMapping("/addListing")
+    @PostMapping("/add-listing")
     public void addListing(@RequestBody Listing listing){   service.add(listing);  }
 
-    @PostMapping("/addListings")
+    @PostMapping("/add-listings")
     public void addListings(@RequestBody List<Listing> list){
         service.addListings(list);
     }
 
-    @GetMapping("/getListings/{id}")
+    @GetMapping("/get-listings/{id}")
     public Listing getListingById(@PathVariable int id) throws Exception {  return service.getListingById(id);    }
 
     @GetMapping("/get-highest-price")

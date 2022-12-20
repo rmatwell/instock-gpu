@@ -44,7 +44,7 @@ public class App {
 
             String JSON = mapper.writeValueAsString(listings);
 
-            URL url = new URL("http://localhost:8080/api/addListings");
+            URL url = new URL("http://localhost:8080/api/add-listings");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");

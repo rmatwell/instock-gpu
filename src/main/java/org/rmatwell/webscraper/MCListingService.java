@@ -96,11 +96,11 @@ public class MCListingService {
                     String partNum = listingPageDoc.select("div:containsOwn(Mfr) + div").text();
                     String chipSet = listingPageDoc.select("div:containsOwn(GPU Chipset) + div").text();
                     Listing gpuListing = new Listing(partNum
-                                                , brand
-                                                , price
-                                                , chipSet
-                                                , listingPageURL
-                                                , image);
+                                                    , brand
+                                                    , price
+                                                    , chipSet
+                                                    , listingPageURL
+                                                    , image);
                     listings.add(gpuListing);
                     listingPageDoc.empty();
                 }
