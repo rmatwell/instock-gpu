@@ -1,9 +1,10 @@
-package org.rmatwell.webscraper;
+package org.rmatwell.instock.gpu.services;
 
 import org.rmatwell.instock.gpu.domains.Listing;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,20 +13,19 @@ import java.util.Objects;
 /**
  * @author Richard Atwell
  */
+@Service
 public class MCListingService {
-
-    private final String BASE_URL = "https://www.microcenter.com";
 
     public void getListings(List<Listing> listings) throws IOException {
 
-        final String url =
-                BASE_URL +
-                        "/search/search_results.aspx?" +
-                        "N=4294966937" +
-                        "&sortby=pricehigh" +
-                        "&NTK=all" +
-                        "&storeid=081" +
-                        "&page=";
+        final String BASE_URL = "https://www.microcenter.com";
+        final String url = BASE_URL
+                        + "/search/search_results.aspx?"
+                        + "N=4294966937"
+                        + "&sortby=pricehigh"
+                        + "&NTK=all"
+                        + "&storeid=081"
+                        + "&page=";
 
         int totalPages = 1, pageIndex = 1;
 
@@ -56,17 +56,12 @@ public class MCListingService {
                     arePagesChecked = true;
                 }
 
-                for(Element listing: Objects.requireNonNull(document).select(
-                        "li.product_wrapper"
-
-                )) {
+                for(Element listing: Objects.requireNonNull(document)
+                                            .select("li.product_wrapper")){
 
                     Element priceLink = listing.select("a[class^=image]").first();
-
                     assert priceLink != null;
-                    if(priceLink.attr("data-price").isEmpty()){
-                        continue;
-                    }
+                    if(priceLink.attr("data-price").isEmpty()){  continue;  }
 
                     String brand = listing
                             .select("a[class^=image]")
@@ -90,7 +85,6 @@ public class MCListingService {
                             .get()
                             .body()
                             .ownerDocument();
-
 
                     if (listingPageDoc == null) throw new AssertionError();
                     String partNum = listingPageDoc.select("div:containsOwn(Mfr) + div").text();

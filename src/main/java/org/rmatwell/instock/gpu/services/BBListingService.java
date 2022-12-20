@@ -1,8 +1,9 @@
-package org.rmatwell.webscraper;
+package org.rmatwell.instock.gpu.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.rmatwell.instock.gpu.domains.Listing;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  * @author Richard Atwell
  */
 
+@Service
 public class BBListingService {
 
     private final String API_URL = "https://api.bestbuy.com/v1/" +

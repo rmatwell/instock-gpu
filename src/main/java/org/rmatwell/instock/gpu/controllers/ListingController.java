@@ -24,14 +24,6 @@ public class ListingController {
     @GetMapping("/get-listings")
     public List<Listing> getListings(){   return service.getListings();    }
 
-    @PostMapping("/add-listing")
-    public void addListing(@RequestBody Listing listing){   service.add(listing);  }
-
-    @PostMapping("/add-listings")
-    public void addListings(@RequestBody List<Listing> list){
-        service.addListings(list);
-    }
-
     @GetMapping("/get-listings/{id}")
     public Listing getListingById(@PathVariable int id) throws Exception {  return service.getListingById(id);    }
 

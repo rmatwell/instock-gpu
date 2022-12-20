@@ -1,4 +1,4 @@
-package org.rmatwell.webscraper.utils;
+package org.rmatwell.instock.gpu.utils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

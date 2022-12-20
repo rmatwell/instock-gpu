@@ -1,7 +1,7 @@
 package org.rmatwell.instock.gpu.domains;
 
 import lombok.*;
-import org.rmatwell.webscraper.utils.DateUtils;
+import org.rmatwell.instock.gpu.utils.DateUtils;
 
 import javax.persistence.Table;
 import javax.persistence.Id;

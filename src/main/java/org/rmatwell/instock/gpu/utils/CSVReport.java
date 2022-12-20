@@ -1,4 +1,4 @@
-package org.rmatwell.webscraper;
+package org.rmatwell.instock.gpu.utils;
 
 import org.rmatwell.instock.gpu.domains.Listing;
 
