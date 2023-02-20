@@ -1,4 +1,4 @@
-package org.rmatwell.webscraper;
+package org.rmatwell.instock.gpu;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,15 +1,14 @@
-package org.rmatwell.instock.gpu.domains;
+package org.rmatwell.instock.gpu.domain;
 
 import lombok.*;
-import org.rmatwell.webscraper.utils.DateUtils;
+import org.rmatwell.instock.gpu.utils.DateUtils;
 
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 /**
  * @author Richard Atwell
@@ -19,7 +18,6 @@ import javax.persistence.GenerationType;
 @NoArgsConstructor
 @Setter @Getter
 public class Listing {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,7 +46,6 @@ public class Listing {
         this.date = DateUtils.dateTodayToString();
         this.image = image;
     }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,5 +69,4 @@ public class Listing {
         else if(chipSet.contains("AMD")) { return chipSet.substring(4); }
         else { return chipSet; }
     }
-
 }

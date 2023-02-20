@@ -1,12 +1,11 @@
-package org.rmatwell.instock.gpu.repositories;
+package org.rmatwell.instock.gpu.repository;
 
-import org.rmatwell.instock.gpu.domains.Listing;
+import org.rmatwell.instock.gpu.domain.Listing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
 
 /**
  * @author Richard Atwell
@@ -28,4 +27,9 @@ public interface ListingRepository extends JpaRepository<Listing, Integer> {
             , nativeQuery = true)
     List<Object[]> findMinPricesByModel();
 
+    @Query( value = "SELECT * FROM listings " +
+            "WHERE date >= (SELECT max(date) from listings) " +
+            "AND date < (SELECT max(date) from listings) + INTERVAL 1 DAY " +
+            "ORDER BY price desc", nativeQuery = true)
+    List<Listing> findListingsByMostRecentDate();
 }
