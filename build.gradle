@@ -1,13 +1,18 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.1.0'
 	id 'java'
 	id 'com.microsoft.azure.azurewebapp' version '1.1.0'
 }
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
 group = 'org.rmatwell'
-version = '0.8.0-SNAPSHOT'
-sourceCompatibility = '1.8'
+version = '1.0.0-SNAPSHOT'
 
 configurations {
 	compileOnly {
@@ -22,29 +27,15 @@ repositories {
 dependencies {
 	implementation 'org.jsoup:jsoup:1.15.3'
 	implementation 'com.opencsv:opencsv:5.7.1'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.0'
+	implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '3.0.1'
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	runtimeOnly 'com.mysql:mysql-connector-j:8.0.31'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	testImplementation 'org.awaitility:awaitility:4.2.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-azurewebapp {
-	subscription = 'd3212f2a-2ea5-44d6-8a64-4b9d4c7fb96a'
-	resourceGroup = 'rmatwell-mysql-db1'
-	appName = 'instock-gpu'
-	pricingTier = 'B1'
-	region = 'East US 2'
-	runtime {
-		os = 'Linux'
-		webContainer = 'Tomcat 9.0'
-		javaVersion = 'Java 8'
-	}
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
 }
 
 tasks.named('test') {

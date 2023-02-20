@@ -8,11 +8,10 @@ import java.time.LocalDate;
  */
 public class DateUtils {
 
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     public static String dateTodayToString(){
         LocalDate localDate = LocalDate.now();
         return localDate.toString();
     }
-
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
 }

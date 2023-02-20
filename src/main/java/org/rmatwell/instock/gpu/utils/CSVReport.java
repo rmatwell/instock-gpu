@@ -1,10 +1,12 @@
 package org.rmatwell.instock.gpu.utils;
 
-import org.rmatwell.instock.gpu.domains.Listing;
+import org.rmatwell.instock.gpu.domain.Listing;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * @author Richard Atwell
@@ -12,26 +14,18 @@ import java.util.List;
 
 public class CSVReport {
 
-    private String fileName;
+    public static ByteArrayInputStream writeListingsToCSV(List<Listing> listings) {
 
-    public CSVReport(String fileName) {   this.fileName = fileName;   }
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PrintWriter csv = new PrintWriter(outputStream);){
 
-    public void writeListingsToCSV(List<Listing> listings){
-
-        try {
-            PrintWriter csv = new PrintWriter(fileName);
             listings.forEach(csv::println);
             csv.close();
+            outputStream.close();
+            return new ByteArrayInputStream(outputStream.toByteArray());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to import data to CSV file: " + e.getMessage());
         }
     }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {   this.fileName = fileName;   }
-
 }
