@@ -21,6 +21,12 @@ jobs:
         with:
           java-version: '17'
           
+      - name: Set up Application properties
+        env: 
+          APPLICATION_PROD_PROPERTIES: ${{ secrets.APPLICATION_PROD_PROPERTIES}}
+          WORKSPACE_PATH: '${{ github.workspace }}/src/main/resources/application-prod.properties'
+        run: echo "$APPLICATION_PROD_PROPERTIES"  > "$WORKSPACE_PATH"
+        
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         
