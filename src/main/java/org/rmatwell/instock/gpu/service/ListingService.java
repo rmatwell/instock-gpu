@@ -57,7 +57,7 @@ public class ListingService{
                 .findAllByModel(model)
                 .stream()
                 .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(Listing::getDate))),
-                            ArrayList::new));git s
+                            ArrayList::new));
     }
     public Listing getListingById(int id) throws Exception {
         Optional<Listing> optionalListing = listingRepository.findById(id);
