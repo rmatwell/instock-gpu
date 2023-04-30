@@ -15,6 +15,8 @@ public interface ListingRepository extends JpaRepository<Listing, Integer> {
 
     Listing findFirstByOrderByPriceAsc();
 
+    List<Listing> findAllByModel(String model);
+
     @Query( value = "WITH cte AS" +
             " (SELECT model, gpu, price, date, " +
             " RANK() OVER ( PARTITION BY gpu " +
@@ -32,4 +34,6 @@ public interface ListingRepository extends JpaRepository<Listing, Integer> {
             "AND date < (SELECT max(date) from listings) + INTERVAL 1 DAY " +
             "ORDER BY price desc", nativeQuery = true)
     List<Listing> findListingsByMostRecentDate();
+
+
 }

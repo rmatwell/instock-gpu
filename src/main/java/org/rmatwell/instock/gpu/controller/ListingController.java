@@ -16,7 +16,7 @@ import java.util.List;
  * @author Richard Atwell
  */
 @RestController
-@RequestMapping("/api/listings")
+@RequestMapping("/api/v1/listings")
 public class ListingController {
     @Autowired
     private final ListingService listingService;
@@ -24,19 +24,24 @@ public class ListingController {
         this.listingService = listingService;
     }
 
-    @GetMapping("/get-listings")
+    @GetMapping("/")
     public List<Listing> getListings(){   return listingService.getListings();    }
 
-    @GetMapping("/get-listings/{id}")
+    @GetMapping("/{id}")
     public Listing getListingById(@PathVariable int id) throws Exception {  return listingService.getListingById(id);    }
 
-    @GetMapping("/get-listings/current-date")
+    @GetMapping("/current-date")
     public List<Listing> getListingsForToday() { return listingService.getListingsByMostRecentDate();}
 
-    @GetMapping("/get-highest-price")
+    @GetMapping("/models/{model}")
+    public List<Listing> findListingsByModel(@PathVariable String model) throws Exception {
+        return listingService.getListingsByModel(model);
+    }
+
+    @GetMapping("/highest-price")
     public Listing findHighestPriceListing(){   return listingService.findFirstByOrderByPriceAsc();   }
 
-    @GetMapping("/get-lowest-prices")
+    @GetMapping("/lowest-prices")
     public List<Object[]> findMinPricesByModel() {   return listingService.findMinPricesByModel();   }
 
     @GetMapping("/download/csv")
