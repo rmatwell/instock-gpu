@@ -10,6 +10,10 @@ import org.rmatwell.instock.gpu.config.BBClientConfig;
 import org.rmatwell.instock.gpu.config.MCClientConfig;
 import org.rmatwell.instock.gpu.domain.Listing;
 import org.rmatwell.instock.gpu.repository.ListingRepository;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 import static org.rmatwell.instock.gpu.utils.CSVReport.writeListingsToCSV;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +51,14 @@ public class ListingService{
     public List<Listing> getListingsByMostRecentDate(){
         return listingRepository.findListingsByMostRecentDate();
     }
+
+    public List<Listing> getListingsByModel(String model) throws Exception {
+        return listingRepository
+                .findAllByModel(model)
+                .stream()
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(Listing::getDate))),
+                            ArrayList::new));git s
+    }
     public Listing getListingById(int id) throws Exception {
         Optional<Listing> optionalListing = listingRepository.findById(id);
         return optionalListing.orElseThrow(ChangeSetPersister.NotFoundException::new);
@@ -68,49 +76,54 @@ public class ListingService{
 
         boolean arePagesChecked = false;
 
-        while(totalPages >= pageIndex){
+        while(totalPages >= pageIndex) {
 
             String currentPageURL = mcClientConfig.getCLIENT_QUERY() + pageIndex++;
+            System.out.println(currentPageURL);
 
             String response = mcClientConfig.webClientResponse(currentPageURL);
 
-            Document document = Jsoup.parse(Objects.requireNonNull(response));
+            if (response != null) {
+                Document document = Jsoup.parse(Objects.requireNonNull(response));
 
-            if(!arePagesChecked){
-                String pagingNumber = Objects.requireNonNull(document)
-                        .select("p.status")
-                        .text();
-                totalPages = getNumberOfPages(pagingNumber);
-                arePagesChecked = true;
+                if (!arePagesChecked) {
+                    String pagingNumber = Objects.requireNonNull(document)
+                            .select("p.status")
+                            .text();
+                    totalPages = getNumberOfPages(pagingNumber);
+                    arePagesChecked = true;
+                }
+                elements.addAll(extractTagValues(document));
+                document.empty();
             }
-            elements.addAll(extractTagValues(document));
-            document.empty();
         }
-        addListings(scrapeDataFromElements(elements));
-    }
+            addListings(getListingData(elements));
+            }
 
-    public List<Listing> scrapeDataFromElements(List<Elements> elements){
+
+    public List<Listing> getListingData(List<Elements> elements){
         return elements.stream().map(element-> {
                     String brand = element.attr("data-brand");
                     double price = Double.parseDouble(element.attr("data-price"));
-                    String relativeURL =element.attr("href");
+                    String relativeURL = element.attr("href");
+                    System.out.println(relativeURL);
                     String image = element.select("img.SearchResultProductImage").attr("src");
 
-                    String listingPageResponse = mcClientConfig.webClientResponse(relativeURL);
+                        String listingPageResponse = mcClientConfig.webClientResponse(relativeURL);
 
-                    Document listingPageDoc = Jsoup.parse(Objects.requireNonNull(listingPageResponse));
+                            Document listingPageDoc = Jsoup.parse(listingPageResponse);
 
-                    String partNum = Objects.requireNonNull(listingPageDoc)
-                            .select("div:containsOwn(Mfr) + div").text();
-                    String chipSet = listingPageDoc
-                            .select("div:containsOwn(GPU Chipset) + div").text();
+                            String partNum = Objects.requireNonNull(listingPageDoc)
+                                    .select("div:containsOwn(Mfr) + div").text();
+                            String chipSet = listingPageDoc
+                                    .select("div:containsOwn(GPU Chipset) + div").text();
 
-                    return new Listing(partNum,
-                                        brand,
-                                        price,
-                                        chipSet,
-                                        (mcClientConfig.getBASE_URL() + relativeURL),
-                                        image);
+                            return new Listing(partNum,
+                                    brand,
+                                    price,
+                                    chipSet,
+                                    (mcClientConfig.getBASE_URL() + relativeURL),
+                                    image);
         }).collect(Collectors.toList());
     }
 
